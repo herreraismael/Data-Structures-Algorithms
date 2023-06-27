@@ -62,14 +62,27 @@ public class GrafoDirigido<T> implements Grafo<T> {
 
 	@Override
 	public boolean existeArco(int verticeId1, int verticeId2) {
-		// if(nodos.containsKey(verticeId1) && nodos.containsKey(verticeId2))
-		// 	ArrayList<Arco<T>> arcos = nodos.get(verticeId1);
+		if (nodos.containsKey(verticeId1) && nodos.containsKey(verticeId2)) {
+			ArrayList<Arco<T>> arcos = nodos.get(verticeId1);
+			for (Arco<T> arco : arcos) {
+				if (arco.getVerticeOrigen() == verticeId1 && arco.getVerticeDestino() == verticeId2) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public Arco<T> obtenerArco(int verticeId1, int verticeId2) {
-		// TODO Auto-generated method stub
-		return null;
+		if(nodos.containsKey(verticeId1) && nodos.containsKey(verticeId2)){
+			ArrayList<Arco<T>> arcos = nodos.get(verticeId1);
+			for (Arco<T> arco : arcos) {
+				if (arco.getVerticeOrigen() == verticeId1 && arco.getVerticeDestino() == verticeId2) {
+					return arco;
+				}
+			}
+		}
 	}
 
 	@Override
