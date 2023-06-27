@@ -79,7 +79,8 @@ public class GrafoDirigido<T> implements Grafo<T> {
 			ArrayList<Arco<T>> arcos = nodos.get(verticeId1);
 			for (Arco<T> arco : arcos) {
 				if (arco.getVerticeOrigen() == verticeId1 && arco.getVerticeDestino() == verticeId2) {
-					return arco;
+					Arco<T> arcoAux = new Arco<GrafoDirigido.T>(verticeId1, verticeId2, arco.getEtiqueta());
+					return arcoAux;
 				}
 			}
 		}
