@@ -1,9 +1,12 @@
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+// import java.security.Key;
+// import java.util.ArrayList;
+// import java.util.HashMap;
+// import java.util.Iterator;
+// import java.util.List;
+// import java.util.Map;
+// import java.util.Set;
+import java.util.*;
 
 public class GrafoDirigido<T> implements Grafo<T> {
 	private Map<Integer, ArrayList<Arco<T>>> nodos = new HashMap<>();
@@ -33,7 +36,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
 	@Override
 	public void agregarArco(int verticeId1, int verticeId2, T etiqueta) {
 		if (nodos.containsKey(verticeId1) && nodos.containsKey(verticeId2)) {
-			Arco newArco = new Arco<T>(verticeId1, verticeId2, etiqueta);
+			Arco<T> newArco = new Arco<T>(verticeId1, verticeId2, etiqueta);
 			nodos.get(verticeId1).add(newArco);
 		}else{
 			System.out.println("No fue posible agregar el arco");
@@ -79,47 +82,64 @@ public class GrafoDirigido<T> implements Grafo<T> {
 			ArrayList<Arco<T>> arcos = nodos.get(verticeId1);
 			for (Arco<T> arco : arcos) {
 				if (arco.getVerticeOrigen() == verticeId1 && arco.getVerticeDestino() == verticeId2) {
-					Arco<T> arcoAux = new Arco<GrafoDirigido.T>(verticeId1, verticeId2, arco.getEtiqueta());
+					Arco<T> arcoAux = new Arco<T>(verticeId1, verticeId2, arco.getEtiqueta());
 					return arcoAux;
 				}
 			}
 		}
+		return null;
 	}
 
 	@Override
 	public int cantidadVertices() {
-		// TODO Auto-generated method stub
-		return 0;
+		return nodos.size();
 	}
 
 	@Override
 	public int cantidadArcos() {
-		// TODO Auto-generated method stub
-		return 0;
+		int cantidadArcos = 0;
+		Set<Integer> keys = nodos.keySet();		
+		for (Integer key : keys) {
+			ArrayList<Arco<T>> arcos = nodos.get(key);
+			for (int i = 0; i < arcos.size(); i++) {
+				cantidadArcos += 1;
+			}
+		}
+		return cantidadArcos;
 	}
-
 	@Override
 	public Iterator<Integer> obtenerVertices() {
-		// TODO Auto-generated method stub
-		return null;
+		return nodos.keySet().iterator();
 	}
 
 	@Override
 	public Iterator<Integer> obtenerAdyacentes(int verticeId) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Arco<T>> adyacentes = nodos.get(verticeId);
+		if (adyacentes == null) {
+			System.out.println("El nodo esta aislado");
+		}
+		ArrayList<Integer> destinos = new ArrayList<>();
+		for (Arco<T> arco : adyacentes) {
+			destinos.add(arco.getVerticeDestino());
+		}
+		return destinos.iterator();
 	}
 
 	@Override
 	public Iterator<Arco<T>> obtenerArcos() {
-		// TODO Auto-generated method stub
-		return null;
+		Set<Integer> keys = nodos.keySet();
+		ArrayList<Arco<T>> arcos = new ArrayList<>();
+		for (Integer key : keys) {
+			ArrayList<Arco<T>> arcosAux = nodos.get(key);
+			arcos.addAll(arcosAux);
+		}
+		return arcos.iterator();
 	}
 
 	@Override
 	public Iterator<Arco<T>> obtenerArcos(int verticeId) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Arco<T>> arcos = nodos.get(verticeId);
+		return arcos.iterator();
 	}
 
 }
